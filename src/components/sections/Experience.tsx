@@ -1,38 +1,51 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 
 const experiences = [
   {
-    role: "Co-Founder",
+    role: "Co-Founder & Software Engineer",
     company: "DiceMail",
     dates: "Jan 2025 – Present",
     bullets: [
-      "Building an AI-powered email platform with sub-50ms search latency.",
-      "Leading end-to-end full-stack development and system architecture.",
+      "Built an AI-powered email platform end-to-end, architecting a Node.js backend with OpenAI embeddings delivering AI-assisted search at sub-50ms latency",
+      "Designed scalable data infrastructure with PostgreSQL and Redis for caching and task queue management, supporting reliable high-throughput data flow",
+      "Implemented secure SMTP/IMAP adapters with monitoring and logging, containerized the full stack with Docker Compose for streamlined deployment",
     ],
+    more: "Tech Stack: Node.js, React, PostgreSQL, Redis, Docker, OpenAI API. Architected system for high-throughput zero-latency data ingest."
   },
   {
-    role: "SWE Intern",
+    role: "Software Development Intern",
     company: "Cecil Labs LLC",
     dates: "May – Jul 2025",
     bullets: [
-      "Developed scalable backend services and integrated complex APIs.",
-      "Optimized data processing pipelines for high-throughput environments.",
+      "Built a multi-module PyQt5 desktop application suite with integrated AI tools and an Azure SQL-backed time-tracking platform, improving workflow efficiency by 35% and reducing manual tracking by 90%",
+      "Automated data extraction across 50+ countries using Selenium web crawlers and Tesseract OCR, increasing content aggregation capacity by 5×",
+      "Integrated a local LLM (Ollama) for text summarization, image recognition, and speech-to-text; built hybrid data pipelines with Azure SQL and CosmosDB, cutting manual research time by 60%",
     ],
+    more: "Spearheaded integration of on-device LLMs to dramatically reduce cloud inference costs and ensure data privacy."
   },
   {
-    role: "Web Dev Intern",
+    role: "Web Developer Intern",
     company: "Akruz Creative",
     dates: "Jan – May 2024",
     bullets: [
-      "Engineered responsive and dynamic web interfaces using modern frameworks.",
-      "Collaborated with design teams to translate UI/UX wireframes into functional code.",
+      "Built and optimized 3+ Django-based web platforms, improving e-commerce functionality for 100+ active users and achieving a 17% improvement in user experience metrics",
+      "Executed 20+ functional and UI test cycles, resolving 13+ critical bugs and reducing post-deployment issues by 9%",
+      "Improved frontend responsiveness and backend processes, reducing page load time by 22%",
     ],
+    more: "Collaborated directly with product teams to refine e-commerce user journeys and stabilize core infrastructure."
   },
 ];
 
 export default function Experience() {
+  const [expanded, setExpanded] = useState<Record<number, boolean>>({});
+
+  const toggleExpand = (index: number) => {
+    setExpanded(prev => ({ ...prev, [index]: !prev[index] }));
+  };
+
   return (
     <section id="experience" className="py-24 relative z-10 border-t border-white/5 bg-[#0A0600]">
       <div className="container mx-auto px-6 lg:px-12">
@@ -70,14 +83,46 @@ export default function Experience() {
                   {exp.role} <span className="text-accent-primary">@ {exp.company}</span>
                 </h3>
                 <p className="text-[12px] font-mono text-muted uppercase tracking-wider mb-4">{exp.dates}</p>
-                <ul className={`text-muted text-[13px] leading-relaxed space-y-2 ${index % 2 === 0 ? "" : "md:inline-block md:text-right"}`}>
-                  {exp.bullets.map((bullet, bIndex) => (
-                    <li key={bIndex} className={`relative pl-4 ${index % 2 === 0 ? "" : "md:pl-0 md:pr-4"}`}>
-                      <span className={`absolute top-2 w-1 h-1 rounded-full bg-accent-secondary ${index % 2 === 0 ? "left-0" : "md:right-0 md:left-auto left-0"}`} />
-                      {bullet}
-                    </li>
-                  ))}
-                </ul>
+                <div className={`inline-block w-full ${index % 2 === 0 ? "" : "md:text-right"}`}>
+                  <ul className={`text-muted text-[13px] leading-relaxed space-y-2 text-left ${index % 2 === 0 ? "" : "md:inline-block"}`}>
+                    {exp.bullets.length > 0 && (
+                      <li className={`relative pl-4 text-left`}>
+                        <span className={`absolute top-2 w-1 h-1 rounded-full bg-accent-secondary left-0`} />
+                        {exp.bullets[0]}
+                      </li>
+                    )}
+                  </ul>
+                  <button 
+                    onClick={() => toggleExpand(index)}
+                    className={`mt-4 text-[11px] font-mono text-accent-secondary hover:text-accent-primary transition-colors cursor-pointer flex ${index % 2 === 0 ? "justify-start" : "md:justify-end"}`}
+                  >
+                    {expanded[index] ? "[ - less ]" : "[ + more ]"}
+                  </button>
+                  <AnimatePresence>
+                    {expanded[index] && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="overflow-hidden"
+                      >
+                        {exp.bullets.length > 1 && (
+                          <ul className={`text-muted text-[13px] leading-relaxed space-y-2 text-left mb-3 ${index % 2 === 0 ? "" : "md:inline-block"}`}>
+                            {exp.bullets.slice(1).map((bullet, bIndex) => (
+                              <li key={bIndex} className={`relative pl-4 text-left`}>
+                                <span className={`absolute top-2 w-1 h-1 rounded-full bg-accent-secondary left-0`} />
+                                {bullet}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                        <div className={`mt-1 text-[12px] text-white/70 italic border-l-2 border-accent-primary/30 pl-3 py-1 text-left ${index % 2 === 0 ? "" : "md:border-l-0 md:border-r-2 md:pl-0 md:pr-3 md:text-right"}`}>
+                          {exp.more}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               </div>
             </motion.div>
           ))}

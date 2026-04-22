@@ -100,6 +100,12 @@ export default function Contact() {
                 github.com/manavkheni1
               </a>
             </div>
+            <div>
+              <div className="text-[11px] font-mono text-accent-secondary uppercase tracking-widest mb-2">SUBSTACK</div>
+              <a href="https://substack.com/@manavkheni" target="_blank" rel="noreferrer" className="text-white hover:text-accent-primary transition-colors">
+                substack.com/@manavkheni
+              </a>
+            </div>
           </motion.div>
 
           {/* Form */}

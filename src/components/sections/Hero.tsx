@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
 import MagneticButton from "../ui/MagneticButton";
+import Image from "next/image";
 
 const stats = [
   { value: 98.23, suffix: "%", label: "Model Accuracy", decimals: 2 },
@@ -22,7 +23,9 @@ export default function Hero() {
   return (
     <section id="hero" className="relative min-h-screen flex items-center pt-20 overflow-hidden">
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
-        <div className="max-w-4xl">
+        <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-12">
+          {/* Left Column */}
+          <div className="max-w-3xl w-full">
           
           {/* Status Badge */}
           <motion.div
@@ -121,6 +124,32 @@ export default function Hero() {
             >
               Contact Me
             </MagneticButton>
+          </motion.div>
+          </div>
+
+          {/* Right Column: Photo */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="w-full md:w-auto flex justify-center md:justify-end shrink-0"
+          >
+            <div 
+              className="relative w-56 h-72 sm:w-64 sm:h-80 md:w-72 md:h-96 overflow-hidden"
+              style={{
+                borderRadius: "12px",
+                border: "2px solid rgba(255,140,0,0.4)",
+                boxShadow: "0 0 40px rgba(255,140,0,0.15)"
+              }}
+            >
+              <Image 
+                src="/Avatar.png" 
+                alt="Manav Kheni" 
+                fill 
+                className="object-cover object-top"
+                priority
+              />
+            </div>
           </motion.div>
         </div>
       </div>
